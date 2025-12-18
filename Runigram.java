@@ -130,22 +130,33 @@ public class Runigram {
 	// width is the number of columns () and height is the number or rows
 	//width 5 height 10, we want 10 rows and 5 columns
 	public static Color[][] scaled(Color[][] image, int height, int width) {
-		Color [][] newImage = new Color[height][width];
-		double xScale = (double) image[0].length / width;
-		double yScale = (double) image.length / height;
+		Color[][] newImage = new Color[height][width];
+		
+		// Original dimensions
+		int h0 = image.length;
+		int w0 = image[0].length;
 
+		// Ratios: how many original pixels per new pixel
+		double yScale = (double) h0 / height;
+		double xScale = (double) w0 / width;
 
 		for (int r = 0; r < height; r++) {
-			int rScaled = (int) ((r * yScale)) < image.length ? (int) (r * yScale) : image.length - 1;
 			for (int c = 0; c < width; c++) {
-				int cScaled = (int) ((c * xScale)) < image[0].length ? (int) (c * xScale) : image[0].length - 1;
+				// Map the target (r, c) to source (i, j)
+				// We cast to int to "floor" the value and get the nearest pixel
+				int sourceR = (int) (r * yScale);
+				int sourceC = (int) (c * xScale);
 
-				newImage[r][c] = image[rScaled][cScaled];
+				// Safety check: ensure we don't exceed original bounds 
+				// (though mathematically r * (h0/height) should stay < h0)
+				sourceR = Math.min(sourceR, h0 - 1);
+				sourceC = Math.min(sourceC, w0 - 1);
+
+				newImage[r][c] = image[sourceR][sourceC];
 			}
-		}
+	}
 
-
-		return newImage;
+	return newImage;
 	}
 	
 	/**
