@@ -149,8 +149,8 @@ public class Runigram {
 
 				// Safety check: ensure we don't exceed original bounds 
 				// (though mathematically r * (h0/height) should stay < h0)
-				sourceR = Math.min(sourceR, h0 - 1);
-				sourceC = Math.min(sourceC, w0 - 1);
+				// sourceR = Math.min(sourceR, h0 - 1);
+				// sourceC = Math.min(sourceC, w0 - 1);
 
 				newImage[r][c] = image[sourceR][sourceC];
 			}
